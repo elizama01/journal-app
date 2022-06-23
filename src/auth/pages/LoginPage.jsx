@@ -4,23 +4,19 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { checkingAuthentication, startGoogleSignIn } from "../../store/auth/thunks";
+import { startGoogleSignIn, startSignInWithEmailAndPassword } from "../../store/auth/thunks";
 import { AuthLayout } from "../layout/AuthLayout";
 
 export const LoginPage = () => {
   const { status } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { email, password, onInputChange } = useForm(
-    {
-      email: "e.lizama01@gmail.com",
-      password: "123456",
-    }
-  );
+  const { email, password, onInputChange } = useForm();
   const isAuthenticated = useMemo(() => status === "checking", [status]);
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(email, password);
-    dispatch(checkingAuthentication());
+
+    dispatch(startSignInWithEmailAndPassword({ email, password }));
 
   }
   const onGoogleSignIn = () => {
