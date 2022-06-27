@@ -6,21 +6,22 @@ import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { startGoogleSignIn, startSignInWithEmailAndPassword } from "../../store/auth/thunks";
 import { AuthLayout } from "../layout/AuthLayout";
-
+const formData = {
+  email: "",
+  password: "",
+}
 export const LoginPage = () => {
   const { status } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { email, password, onInputChange } = useForm();
+  const { email, password, onInputChange } = useForm(formData);
   const isAuthenticated = useMemo(() => status === "checking", [status]);
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
 
     dispatch(startSignInWithEmailAndPassword({ email, password }));
 
   }
   const onGoogleSignIn = () => {
-    console.log("Google Sign In");
     dispatch(startGoogleSignIn());
   }
   return (
